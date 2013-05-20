@@ -1,6 +1,6 @@
 ---
 layout: page
-title: Maxwin''s
+title: Posts
 tagline: Supporting tagline
 ---
 {% include JB/setup %}
