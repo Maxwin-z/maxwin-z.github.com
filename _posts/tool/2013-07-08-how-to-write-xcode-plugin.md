@@ -25,35 +25,39 @@ Next完成，工程创建完成。
 
 为XLog类添加两个Class method:  
 XLog.h  
-	
-	@interface XLog : NSObject  
-	// entry for plugin  
-	+ (void)load;  
-	+ (void)pluginDidLoad:(NSBundle *)bundle;  
-	@end  
-  
+
+{% highlight objc %}  
+@interface XLog : NSObject  
+// entry for plugin  
++ (void)load;  
++ (void)pluginDidLoad:(NSBundle *)bundle;  
+@end  
+{% endhighlight %}
+
 XLog.mm  
-	
-	@implementation XLog  
-	  
-	+ (void)load  
-	{  
-		NSLog(@"%s", __PRETTY_FUNCTION__);  
-	}  
-	+ (void)pluginDidLoad:(NSBundle *)bundle  
-	{  
-		NSLog(@"%s, %@", __PRETTY_FUNCTION__, bundle);  
-	}  
+
+{% highlight objc %}  
+@implementation XLog  
+  
++ (void)load  
+{  
+	NSLog(@"%s", __PRETTY_FUNCTION__);  
+}  
++ (void)pluginDidLoad:(NSBundle *)bundle  
+{  
+	NSLog(@"%s, %@", __PRETTY_FUNCTION__, bundle);  
+}  
+{% endhighlight %}
   
 仅打印一些log，检测是否加载plugin即可。这时候class和method都创建好了，但是Xcode怎么知道去加载这个class？请继续  
 #三、修改Info.plist
 在工程Supports Files里有个XLog-Info.plist文件。打开编辑之。  
   
-  
-1. 修改Principal class的值为一个class名。本例为XLog。这样Xcode就知道该plugin的入口了。
+1. 修改Principal class的值为一个class名。本例为XLog。这样Xcode就知道该plugin的入口了。  
 2. 添加Boolean型参数XC4Compatible: YES  
 3. 添加Boolean型参数XCGCReady: YES  
 4. 添加Boolean型参数XCPluginHasUI: NO  
+  
 最终效果如下图：  
   
 ![](/images/how-to-write-xcode-plugin/Screen-Shot-2012-05-08-at-4.52.21-PM.png)
@@ -64,10 +68,12 @@ XLog.mm
 ![](/images/how-to-write-xcode-plugin/Screen-Shot-2012-05-08-at-4.54.16-PM.png)
   
 添加完成后，展开Run Script栏，输入以下脚本：
-	
-	rm -rf ~/Library/Application\\ Support/Developer/Shared/Xcode/Plug-ins/XLog.xcplugin
-	nmkdir -p ~/Library/Application\\ Support/Developer/Shared/Xcode/Plug-ins
-	cp -r build/Debug/XLog.bundle ~/Library/Application\\ Support/Developer/Shared/Xcode/Plug-ins/XLog.xcplugin 
+  
+{% highlight sh %}  
+rm -rf ~/Library/Application\\ Support/Developer/Shared/Xcode/Plug-ins/XLog.xcplugin
+nmkdir -p ~/Library/Application\\ Support/Developer/Shared/Xcode/Plug-ins
+cp -r build/Debug/XLog.bundle ~/Library/Application\\ Support/Developer/Shared/Xcode/Plug-ins/XLog.xcplugin 
+{% endhighlight %}  
   
 每次build的时候都会删除老的plugin，安装最新的进去。  
   
