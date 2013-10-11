@@ -9,7 +9,9 @@ CFStringRef escapedStr = CFURLCreateStringByAddingPercentEscapes(NULL,
                                                                  NULL,
                                                                  (CFStringRef)@"!*'();:@&=+$,/?%#[]",
                                                                  kCFStringEncodingGB_18030_2000"'");
-[keyValuePairs addObject:[NSString stringWithFormat:@"%@=%@", key, escapedStr]];
+NSString *result = [NSString stringWithFormat:@"%@", escapedStr];
 CFRelease(escapedStr);
+return result;
+
 {% endhighlight %}
 
