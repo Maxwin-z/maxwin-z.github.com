@@ -1,2 +1,76 @@
-background_fetch_help
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//WAPFORUM//DTD XHTML Mobile 1.2//EN"
+"http://www.openmobilealliance.org/tech/DTD/xhtml-mobile12.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1"  />
+    <title>xsmth background fetch help</title>
+    <style type="text/css">
+    body {
+        font-family: monospace;
+    }
+    h1 {
+    	border-bottom: 1px solid #EEE;
+    }
+    p {
+    	font-size: 1.2em;	
+    	text-indent: 2.4em;
+    }
+    </style>
+</head>
+<body>
+<h1>如何工作</h1>
+<p>
+	iOS7系统支持后台定时获取数据，xsmth按一定时间规则，请求http://m.newsmth.net/user/query，用于获取邮件、回复、@消息变更。通过local notification进行提醒。
+</p>
 
+<h1>智能模式</h1>
+<p>
+	开启智能模式后，xsmth会在无任何”消息变更“的情况下，逐步降低请求频次。
+</p>
+<p>
+	规则如下：x = {20, 30, 50, 80, 130, 210, 340, 550, 890}。上述表示当前请求无“消息变更”后，将在x分钟后执行下次后台请求。首次为20min，无变更则30min之后，依然无变更则50min之后再请求，以此类推。当发生“消息变更”后，重置为20min。
+</p>
+<p>
+	关闭智能模式后，请求间隔固定为系统支持的最小时间间隔，大约为15～20分钟。
+</p>
+
+<h1>消息变更定义</h1>
+<p>
+	邮件从无 -> 有；回复我、@我数目增加；发表、回复帖子或站内信。以上这些操作xsmth均认为在接下来的一段时间内，很可能再次出现消息变更，会重置后台获取时间间隔。
+</p>
+
+<h1>流量几何</h1>
+<p>
+	最大流量：在非智能模式下：每小时4次 * 每次请求1.2k * 24小时 ≈ 一天120k。
+</p>
+<p>
+	最小流量：智能模式下的资深潜水员：每890分钟一次请求 ≈ 一天2k。
+</p>
+
+<h1>什么模式更适合你</h1>
+<p>
+	专业水母、流量较多、期望消息更实时者，关闭智能模式。
+</p>
+<p>
+	潜水员、正常用户、流量不是特别少者，开启智能模式。
+</p>
+<p>
+	资深潜水员、无需此项服务者，关闭后台定时获取功能。
+</p>
+
+<h1>如何关闭</h1>
+<ol>
+	<li>双击Home，从任务列表中移除xsmth。该操作为临时关闭后台请求，下次唤起app后重新启动。</li>
+	<li>xsmth更多选项内关闭或注销用户登录，Maxwin保证关闭后台请求。</li>
+	<li>“系统 - 通用 - 后台应用程序刷新”中关闭。</li>
+</ol>
+
+<p style="text-align: right;">
+—— By Maxwin(语体教)
+</p>
+
+</body>
+
+<body>
