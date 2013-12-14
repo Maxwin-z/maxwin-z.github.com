@@ -1,6 +1,6 @@
-// this is mainpage.js for v1.3
+// this is mainpage.js for v1.3 v2
 //
 
 
 
-/* 5bcc3431f3ada4c7c77e9fa95400d8c6 */ 
+/* f7c5935edc642b15a4bb727a12ad406d */ 
