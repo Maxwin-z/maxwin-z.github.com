@@ -1,13 +1,13 @@
 {
     items: [
-        'me.maxwin.xsmth.donate1',
-        'me.maxwin.xsmth.donate2',
-        'me.maxwin.xsmth.donate4',
-        'me.maxwin.xsmth.donate8',
+        "me.maxwin.xsmth.donate1",
+        "me.maxwin.xsmth.donate2",
+        "me.maxwin.xsmth.donate4",
+        "me.maxwin.xsmth.donate8",
     ],
     others: [
-        'zhifubao: zwd2005@gmail.com',
-        'caifutong: 50494978'
+        "zhifubao: zwd2005@gmail.com",
+        "caifutong: 50494978"
     ]
 }
 
