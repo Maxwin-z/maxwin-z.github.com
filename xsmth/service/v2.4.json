@@ -1,7 +1,7 @@
 {
-    "version": 1,
+    "version": 0,
     "parser": 0,
     "adid": "",
-    "gadratio": 0,
+    "gadratio": 10,
     "iadratio": 0
 }
