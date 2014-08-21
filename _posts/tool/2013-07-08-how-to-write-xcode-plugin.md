@@ -114,3 +114,4 @@ cp -r build/Debug/XLog.bundle ~/Library/Application\\ Support/Developer/Shared/X
 至此，一个Xcode plugin工程就创建并可以运行了，入口也有了，后面就是如何来实现自己想要的功能。  
   
 XcodeColors里提供的思路是用&lt;objc/runtime.h&gt;库，将一些类默认的行为替换自己的，至于其他方案，还需要大家提供思路。  
+
