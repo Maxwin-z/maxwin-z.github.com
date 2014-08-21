@@ -12,7 +12,7 @@ tag: dev
 
 下面是max在学习过程中碰到的一些问题或者需要注意的地方。
 
-### 所需准备：  
+### 所需准备
 1. Xcode，xcode command line tools   
 2. 越狱设备一台，max用的是8月最新的iPad Mini2；iOS 7.1.2  
 
@@ -30,7 +30,8 @@ iPad上越狱后，通过cydia安装openssl(用于ssh登录，记得修改密码
 ### App和Tweak
 按照教程，App开发比较容易，需要注意的是安装过后，重启了sprintboard才看到app。  
 
-Tweak例子首先是碰到了各种头文件问题。通过搜索找到这些资源：  
+Tweak例子首先是碰到了各种头文件问题。通过搜索找到这些资源： 
+   
 1. 一些lib [https://github.com/kokoabim/iOSOpenDev](https://github.com/kokoabim/iOSOpenDev)  
 2. 一些头文件[https://github.com/rpetrich/iphoneheaders](https://github.com/rpetrich/iphoneheaders)  
 
