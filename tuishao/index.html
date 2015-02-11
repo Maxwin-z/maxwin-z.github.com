@@ -32,6 +32,8 @@ html, body {
 	height: 40px;
 	line-height: 40px;
 	color: white;
+	display: block;
+	text-decoration: none;
 }
 #appstore {
 	border-color: #218E00;
@@ -40,6 +42,9 @@ html, body {
 #android {
 	border-color: #222EFF;
 	background-color: #222EFF;
+}
+#android span {
+	font-size: 75%;
 }
 #qrcode {
 	width: 216px;
@@ -53,8 +58,11 @@ html, body {
 <body>
 <div id="header">无忧体温计</div>
 <div id="download">
-	<div id="appstore" class="download-btn">iOS AppStore</div>
-	<div id="android" class="download-btn">Android</div>
+	<a href="https://itunes.apple.com/us/app/wu-you-ti-wen-ji/id878615970?ls=1&amp;mt=8" id="appstore" class="download-btn">iOS AppStore</a>
+	<a id="android" href="javascript:;" class="download-btn">
+		Android
+		<span>即将上线</span>
+	</a>
 </div>
 <div id="qrcode">
 </div>
