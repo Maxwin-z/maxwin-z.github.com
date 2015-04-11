@@ -1,0 +1,22 @@
+html, body {
+	margin: 0;
+	padding: 0;
+	font-size: 32px;
+}
+
+a.btn {
+	display: inline-block;
+	border: 1px solid blue;
+	border-radius: 5px;
+	padding: 3px 5px;
+	text-decoration: none;
+	margin: 10px;
+}
+
+#test_content {
+	display: block;
+	min-height: 200px;
+	width: 90%;
+	margin: auto;
+	font-size: 32px;
+}

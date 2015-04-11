@@ -1,0 +1,25 @@
+CACHE MANIFEST
+
+CACHE:
+#js
+http://maxwin.me/forum/toplicai/js/underscore.js
+http://maxwin.me/forum/toplicai/js/zepto.js
+http://maxwin.me/forum/toplicai/js/touch.js
+http://maxwin.me/forum/toplicai/js/common.js
+http://maxwin.me/forum/toplicai/js/XApi.js
+http://maxwin.me/forum/toplicai/js/list.js
+
+#css
+http://maxwin.me/forum/toplicai/css/main.css
+
+#img
+http://maxwin.me/forum/toplicai/img/icon-loading.png
+
+#extra
+
+#version: 1428752315017
+
+NETWORK:
+*
+
+FALLBACK:

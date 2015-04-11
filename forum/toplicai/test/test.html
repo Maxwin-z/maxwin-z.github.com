@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no" />
+		<title>XTest</title>
+		<link rel="stylesheet" type="text/css" href="test.css" />	
+		<script type="text/javascript" src="zepto.js"></script>
+		<script type="text/javascript" src="touch.js"></script>
+		<script type="text/javascript" src="/js/XApi.js"></script>
+		<style type="text/css">
+h1 {
+	border: 1px solid red;
+	margin: 10px;
+}
+h1 span {
+	background-color: blue;
+	display: block;
+	margin: 20px;
+}
+		</style>
+	</head>
+
+	<body>
+	<h1><a href="javascript:window.location.reload()">Hello XTest2</a></h1>
+	<div id="debug_time"></div>
+	<a class="btn" href="javascript:;" id="test_foo">foo</a>
+	<a class="btn" href="javascript:;" id="test_ajax">ajax</a>
+	<a class="btn" href="javascript:;" id="test_open">open</a>
+	<a class="btn" href="javascript:;" id="test_publish">publish</a>
+	<a class="btn" href="javascript:;" id="test_unsubscribe">unsubscribe</a>
+
+<a href="xforum://page?page=board&amp;url=http%3A%2F%2Fm.newsmth.net">xforum</a>
+	<textarea id="test_content"></textarea>
+	<img src="http://img0.bdstatic.com/img/image/shouye/sheying0311.jpg" />
+	<div id="test_touch_container">
+		<h1 class="hl"><span>Hello touch<span></h1>
+		<h1 class="hl">Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>	
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>	
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>	
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+		<h1>Hello touch</h1>
+	</div>
+	</body>
+	<script type="text/javascript">
+	$('#debug_time').html(new Date().toString());
+
+	$x.setTitle('Test');
+
+	$('#test_foo').on('click', function () {
+		$x.foo('hello foo', function (val) {
+			alert(JSON.stringify(val));
+			// console.log(JSON.stringify(val));
+		});		
+	});
+
+	$('#test_touch_container h1').tap(function () {
+		console.log(this);
+	});
+	$('.hl').on('touchstart', function () {
+		$(this).addClass('hl-on');
+	}).on('touchmove touchend', function () {
+		$(this).removeClass('hl-on');
+	});
+
+	$('#test_ajax').on('click', function() {
+		var url = 'http://www.hongxing163.com/forum.php?mod=forumdisplay&fid=32&mobile=1';
+		url = 'http://m.newsmth.net/';
+		$('#test_content').val('loading...');
+		$x.ajax({
+			url: url,
+			success: function (html) {
+				$('#test_content').val(html);
+				parse(html);
+			},
+			error: function (code, message) {
+				alert('error:' + code + message);
+			}
+		});
+	});
+
+	$('#test_open').on('click', function () {
+		$x.open('[url]');
+	});
+
+	// $('#test_touch_container').on('tap', function () {
+	// 	$(this).find('h1').html(new Date().toString());
+	// });
+
+	// ['touchstart', 'touchmove', 'touchend'].forEach(function (evt) {
+	// 	$('#test_touch_container').on(evt, function () {
+	// 		console.log(evt);
+	// 	})
+	// });
+
+	var sHandler = $x.subscribe('hello', function (data) {
+		console.log(data);
+	});
+
+	$('#test_unsubscribe').on('click', function () {
+		$x.unsubscribe(sHandler);
+	});
+
+	$('#test_publish').on('click', function() {
+		$x.publish('hello', {
+			'val': 'this is a test notification'
+		});
+	});
+
+	// test paser
+	function parse(html) {
+		var body = extractBody(html);
+		console.log(body);
+		var dom = $(body);
+		var lis = dom.find('#m_main .slist.sec li');
+		console.log(lis);
+	}
+
+	function extractBody (html) {
+		var body = '';
+		html.replace(/^(.|\s)*?(<body(.|\s)*<\/body>)(.|\s)*$/, function ($0, $1, $2) {
+			body = $2;
+		});
+		if (body == '') {
+			body = html;
+		}
+		return body;
+	}
+	</script>
+
+</html>

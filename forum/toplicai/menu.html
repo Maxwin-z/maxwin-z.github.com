@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html manifest="manifests/menu.html.manifest">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no" />
+		<title>Menu</title>
+		<link rel="stylesheet" type="text/css" href="/css/main.css" />
+		<script type="text/javascript" src="js/underscore.js"></script>
+		<script type="text/javascript" src="js/zepto.js"></script>
+		<script type="text/javascript" src="js/touch.js"></script>
+		<script type="text/javascript" src="js/iscroll.js"></script>
+		<script type="text/javascript" src="js/common.js"></script>
+		<script type="text/javascript" src="js/XApi.js"></script>
+		<style type="text/css">
+
+		body {
+		}
+		#header {
+			position: absolute;
+			z-index: 2;
+			top: 0;
+			left: 0;
+			right: 0;
+			font-weight: bold;
+			padding-left: 20px;
+			padding-top: 50px;
+			height: 70px;
+			border-bottom: 1px solid #bbb;
+			background-color: #f8f8f8;
+		}
+		#wrapper {
+			position: absolute;
+			z-index: 1;
+			top: 120px;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+/*		#list {
+			position: fixed;
+			left: 0;
+			right: 0;
+			bottom: 0;
+		}
+*/		#list .cell {
+			background-color: white;
+		}
+		#list .font-title {
+			line-height: 80px;
+		}
+		</style>
+	</head>
+
+<body>
+	<div id="header">
+	版面列表
+	</div>
+	<!-- <h1><a href="javascript:window.location.reload()">Reload Menu Page</a></h1> -->
+	<div id="debug"></div>
+	<div id="wrapper">
+		<ul id="list">
+		</ul>
+	</div>
+
+	<script type="text/template" id="tpl_board_item">
+		<li class="board cell hl" ontap="javascript:openboard(<%= fid %>, '<%= name %>')">
+			<div class="cell-c font-title">
+				<div class="name">
+					<%= name %>
+					<% if (dailyCount > 0) { %>
+						<span class="count">(<%= dailyCount %>)</span>
+					<% } %>
+				</div>
+			</div>
+			<div class="cell-s"></div>
+		</li>
+	</script>
+
+	<script type="text/javascript">
+	$x.setBgColor(0xf8, 0xf8, 0xf8);
+
+	var config = {
+		'list': '#cate_1',
+		'item': 'tr td .fl',
+		'data': {
+			'name': '.fnamecolor',
+			'fid': {
+				'selector': '.fnamecolor',
+				'fn': function (el) {
+					return el.attr('id').substring(3);
+				}
+			},
+			'dailyCount': {
+				'selector': 'h3 span',
+				'fn': function (el) {
+					if (el.length == 0) return 0;
+					return parseInt(el.html().replace(/[^\d]/g, ''));
+				}
+			}
+		}
+	};
+
+	function openboard(fid, name) {
+		$x.open({
+			'url': XUtils.setUrlWithQuery('x://xweb', {
+				// 'page': 'board',
+				'url': $xu.replacePath('thread.html'),
+				'fid': fid,
+				'name': name,
+				'title': name
+			}),
+			// 'url': 'x://page?page=board&fid=' + fid + '&name=' + encodeURIComponent(name) + '&title=' + encodeURIComponent(name),
+			'root': true
+		})
+	}
+
+	// $.getJSON('http://' + window.location.hostname + ':8081/c_menu.html', function (rsp) {
+	$x.getJSON('http://bbs.toplicai.cn/index.php', function (rsp) {
+		var body = getBody(rsp.data);
+		// $('#debug').html(body);
+		var items = parse(body);
+		console.log(items);
+		var tpl = _.template($('#tpl_board_item').html().trim());
+		render($('#list'), tpl, items);
+		setupHighlight();
+		new IScroll($('#wrapper').get(0));
+	});
+
+	function render(dom, tpl, items) {
+		var htmls = [];
+		_.each(items, function (item) {
+			htmls.push(tpl(item));
+		});
+		var lis = $(htmls.join(''));
+		lis.on('tap', function () {
+			eval($(this).attr('ontap'));
+		});
+		dom.append(lis);
+	}
+
+	function parse(body) {
+		var dom = $(body);
+		var list = dom.find(config.list);
+		var els = list.find(config.item);
+		var items = [];
+		els.each(function (idx, el) {
+			var item = {};
+			$.each(config.data, function (key, parser) {
+				item[key] = getValue($(el), parser);
+			});
+			items.push(item);
+		});
+		return items;
+	}
+
+	function getValue(dom, parser) {
+		if ($.isPlainObject(parser)) {
+			var el = dom.find(parser.selector);
+			return $.isFunction(parser.fn) ? parser.fn(el) : el.html();
+		} else {
+			return dom.find(parser).html().trim();
+		}
+	}
+
+	function getBody(html) {
+		html = html.replace(/<script(.|\s)*?<\/script>/g, '');
+		var body = '';
+		html.replace(/^(.|\s)*?(<body(.|\s)*<\/body>)(.|\s)*$/, function ($0, $1, $2) {
+			body = $2;
+		});
+		if (body == '') {
+			body = html;
+		}
+		body = body.replace(/(<img[^>]+)src=(.*?)>/g, '$1xsrc=$2');
+		// console.log(body);
+		return body;
+	}
+	</script>
+</body>
+
+</html>

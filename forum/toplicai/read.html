@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html manifest="manifests/read.html.manifest">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no" />
+    <title>Board</title>
+    <style type="text/css">
+    body.xstyle {}
+    </style>
+
+    <link rel="stylesheet" type="text/css" href="/css/main.css" />
+    <script type="text/javascript" src="js/underscore.js"></script>
+    <script type="text/javascript" src="js/zepto.js"></script>
+    <script type="text/javascript" src="js/touch.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/XApi.js"></script>
+    <script type="text/javascript" src="js/list.js"></script>
+    <style type="text/css">
+    #post-title {
+        zoom: 120%;
+        padding: 10px;
+    }
+    .post-head {
+        margin-top: 10px;
+        display: -webkit-box;
+        /*-webkit-box-align: center;*/
+        
+        width: 100%;
+    }
+    .avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 1px 1px #ccc;
+    }
+    .info {
+        -webkit-box-flex: 1;
+        padding-left: 10px;
+    }
+    </style>
+</head>
+
+<body>
+    <!-- <h1><a href="javascript:window.location.reload()">Hello read</a></h1> -->
+    <div id="post-title" class="font-title"></div>
+    <ul id="list">
+
+    </ul>
+    <script type="text/template" id="tpl_list_item">
+        <li class="item cell">
+            <div class="cell-c">
+                <div class="post-head">
+                    <img class="avatar" xsrc="<%= avatar %>" />
+                    <div class="info">
+                        <div class="author font-title">
+                            <strong>
+                                <%= author %>
+                            </strong>
+                        </div>
+                        <div class="hint font-subtitle">
+                            <span class="index">
+                                <%= indexHint %>
+                            </span>
+                            <span class="addtime">
+                                <%= addtime %>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="content font-title">
+                    <%= content %>
+                </div>
+            </div>
+            <div class="cell-s"></div>
+        </li>
+    </script>
+    <script type="text/javascript">
+    var config = {
+        'list': '#main .t5.t2',
+        'data': {
+            'author': {
+                'selector': 'b.fl',
+                'fn': function(el) {
+                    return $xu.trimTag(el.html());
+                }
+            },
+            'avatar': {
+                'selector': '.user-pic img',
+                'fn': function(el) {
+                    return 'http://bbs.toplicai.cn/' + el.attr('xsrc');
+                }
+            },
+            'indexHint': '.tiptop a.s3',
+            'addtime': {
+                'selector': '.tiptop .fl.gray',
+                'fn': function(el) {
+                    return el.html().trim().substring(4);
+                }
+            },
+            'subject': '#subject_tpc',
+            'content': '.tpc_content'
+        }
+    };
+
+    var tpl = _.template($('#tpl_list_item').html().trim());
+
+    var query = XUtils.parseQuery(window.location.href);
+    var url = 'http://bbs.toplicai.cn/read.php?tid=' + query.tid;
+    // url = 'http://' + window.location.hostname + ':8081/c_thread.html';
+    // // $x.getJSON('http://bbs.toplicai.cn/thread.php?fid=' + query.fid, function (rsp) {
+    // $.getJSON('http://localhost:8081/c_board.html', function (rsp) {
+    // 	var html = rsp.data;
+    // 	// console.log(html);
+    // 	var body = getBody(html);
+    // 	var dom = $(body);
+    // 	var items = parse(dom, config);
+    // 	// console.log(items);
+    // 	var htmls = [];
+    // 	items.forEach(function (item) {
+    // 		htmls.push(tpl(item));
+    // 	});
+    // 	$('#list').append($(htmls.join('')));
+
+    // 	var pageInfo = getPageInfo(dom.find('.pages .pagesone'));
+
+    // });
+
+    var latestPage = 0;
+    var totalPage = 1;
+    var loading = {};
+    var footerLoading = createHorizentalLoading();
+    var fullpageLoading = createFullpageLoading();
+    var fullRetry = null;
+    $('body').append(fullpageLoading);
+
+    refresh();
+
+    $(window).on('scroll', function() {
+        var bodyHeight = $(document.body).height();
+        height4loading = Math.max($(window).height(), 960);
+        if (latestPage > 0) {
+            height4loading = Math.max(bodyHeight / latestPage, height4loading);
+        }
+        var scrollTop = $(window).scrollTop();
+        var shouldload = $(window).scrollTop() + height4loading + $(window).height() > bodyHeight;
+        if (shouldload) {
+            loadNext();
+        }
+    });
+
+    function refresh() {
+        latestPage = 0;
+        loadNext(true);
+    }
+
+    function loadNext(force) {
+        if (latestPage == totalPage && !force) return; // already load last page
+        loadPage(latestPage + 1, renderPage);
+    }
+
+    function renderPage(items, pageInfo) {
+        totalPage = pageInfo.totalPage;
+        latestPage = Math.max(latestPage, pageInfo.currentPage);
+        for (var i = latestPage; i <= pageInfo.totalPage; ++i) {
+            createPageAnchor(i);
+        }
+
+        renderItems(items, pageInfo.currentPage);
+
+        if (latestPage < totalPage) {
+            footerLoading.insertAfter($('#list'));
+            footerLoading.find('.horizental-hint-hint')
+                .text('正在加载' + (latestPage + 1) + '/' + totalPage + ' ...');
+        } else {
+            footerLoading.remove();
+        }
+    }
+
+    function renderItems(items, page) {
+        var htmls = [];
+        items.forEach(function(item) {
+            htmls.push(tpl(item));
+        });
+        var dom = $(htmls.join(''));
+        dom.insertAfter($('#anchor_' + page));
+        // $('#list').append(dom);
+        dom.find('img').each(function(index, img) {
+            var img = $(img);
+            var src = img.attr('xsrc');
+            if (!src) return;
+            if (src.indexOf('http') === -1) {
+                src = 'http://bbs.toplicai.cn/' + src;
+            }
+            $x.download(src, function(rsp) {
+                if (rsp.code == 0) {
+                    var path = rsp.path;
+                    var url = path.replace(/^file:\/\//i, 'x://');
+                    img.attr('src', url);
+                }
+            });
+        });
+    }
+
+    function loadPage(page, callback) {
+        if (loading[page]) return;
+        loading[page] = true;
+        // if (page == 1) {
+        // 	url = 'http://localhost/';
+        // }
+        // url = 'http://10.128.36.61:8081/c_read.html#';
+        $x.ajax({
+            dataType: 'json',
+            url: url + '&page=' + page,
+            success: function(rsp) {
+                if (fullpageLoading) {
+                    fullpageLoading.remove();
+                    fullpageLoading = null;
+                }
+
+                loading[page] = false;
+                var html = rsp.data;
+                var body = $xu.getBody(html);
+                var dom = $(body);
+                var items = parse(dom, config);
+                console.log(items);
+                var pageInfo = getPageInfo(dom.find('.pages .pagesone'));
+                callback(items, pageInfo);
+
+                if (page == 1) {
+                    var title = dom.find('#subject_tpc').html();
+                    $('#post-title').html(title);
+                    $x.setTitle($xu.html2text(title));
+                }
+            },
+            fail: function(code, message) {
+                loading[page] = false;
+                if (page == 1) {
+                    showFullRetryPage();
+                } else {
+
+                }
+                console.log('error:', code, message);
+            }
+        });
+    }
+
+    function showFullRetryPage() {
+        if (!fullRetry) {
+            fullRetry = createFullpageRetry();
+            fullRetry.on('tap', function() {
+                refresh();
+                $('body').append(fullpageLoading);
+                fullRetry.remove();
+            });
+        }
+        fullpageLoading.remove();
+        $('body').append(fullRetry);
+    }
+
+    function createPageAnchor(page) {
+        var dom = $('#anchor_' + page);
+        if (dom.length > 0) return dom;
+
+        dom = $('<li id="anchor_' + page + '" class="page-anchor"></li>');
+        if (page <= 1) {
+            $('#list').append(dom);
+        } else {
+            var node = $('#anchor_' + (page - 1));
+            if (!node) {
+                node = createPageAnchor(page - 1);
+            }
+            dom.insertAfter(node);
+        }
+
+        return dom;
+    }
+
+    // test scroll
+    // $(document.body).on('touchmove', function (event) {
+    // 	console.log(event);
+    // });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html manifest="-manifests/home.html.manifest">
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+		<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no" />
+		<title>Test</title>
+		<link rel="stylesheet" type="text/css" href="/css/main.css" />
+		<script type="text/javascript" src="/js/zepto.js"></script>
+		<script type="text/javascript" src="/js/touch.js"></script>
+		<script type="text/javascript" src="/js/XApi.js"></script>
+		<script type="text/javascript" src="/js/common.js"></script>
+		<style type="text/css">
+		
+		/*html, body {
+			width: 100%;
+			height: 100%;
+			padding: 0;
+			margin: 0;
+		}*/
+		body {
+			border: 1px solid green;
+			/*position: absolute;*/
+		}
+		</style>
+	</head>
+
+<body>
+	<h1><a href="javascript:window.location.reload()">Reload Test Page</a></h1>
+	<div id="debug"></div>
+	<a href="javascript:;" id="btn-test">publish</a>
+
+<script type="text/javascript">
+	$x.subscribe('foo', function (data) {
+		console.log('test', data);
+	})
+	$('#btn-test').tap(function () {
+		console.log('p');
+		$x.publish('foo', {'msg': 1});
+	});
+</script>
+
+</body>
+
+</html>

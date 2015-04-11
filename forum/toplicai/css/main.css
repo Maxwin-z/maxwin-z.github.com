@@ -1,0 +1,113 @@
+* {
+    word-break: break-all;
+    -webkit-touch-callout: none;
+}
+a {
+    text-decoration: none;
+}
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    color: #333;
+    font-family: 'FZLanTingHei-L-GBK', 'Helvetica Neue';
+}
+.font-title {
+    color: #333;
+}
+.font-subtitle {
+    color: #888;
+}
+
+ul, li {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+.line-top {
+    background-image: url("../img/repeat-x-top.png");
+    background-repeat: repeat-x;
+    background-position: left top;
+}
+.line-bottom {
+    background-image: url("../img/repeat-x-bottom.png");
+    background-repeat: repeat-x;
+    background-position: left bottom;
+}
+.cell {
+    padding-left: 20px;
+}
+.cell:first-child {
+    border-top: 1px solid #bbb;
+}
+.cell .cell-c {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.cell .cell-s {
+    height: 1px;
+    overflow: hidden;
+    border-bottom: 1px solid #bbb;
+}
+.cell:last-child .cell-s {
+    border-bottom: none;
+}
+.cell:last-child {
+    border-bottom: 1px solid #bbb;
+}
+.cell.hl-on {
+    background-color: #f8f8f8;
+}
+/****/
+
+.fullpage-hint {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(1, 1, 1, 0.1);
+    z-index: 999;
+}
+.fullpage-hint .hint-wrapper {
+    position: absolute;
+    top: 40%;
+    left: 0;
+    right: 0;
+}
+.fullpage-hint .hint-img {
+    background-image: url('img/icon-loading.png');
+    background-repeat: no-repeat;
+    background-position: center;
+    height: 128px;
+}
+.fullpage-hint .hint-text {
+    text-align: center;
+}
+.rotate-animation {
+    -webkit-animation: spin 1.5s linear infinite;
+}
+@-webkit-keyframes spin {
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+.horizental-hint {
+    display: -webkit-box;
+    -webkit-box-align: center;
+    height: 120px;
+}
+.horizental-hint-left, .horizental-hint-right {
+    -webkit-box-flex: 1
+}
+.horizental-hint-img {
+    width: 64px;
+    height: 64px;
+    background-image: url('img/icon-loading.png');
+    background-size: 48px auto;
+    background-repeat: no-repeat;
+    background-position: center;
+}
+.horizental-hint-hint {
+    padding-left: 0px;
+}
