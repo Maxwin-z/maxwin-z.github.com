@@ -66,27 +66,36 @@
 $x.setTitle('首页');
 var dom;
 refresh();
+$x.onRefresh = refresh;
+
 var tpl = _.template($('#list-item-tpl').html().trim());
 function refresh() {
-	$.getJSON('http://192.168.3.230:8081/c_home.html', function (rsp) {
-		dom = $($xu.getBody(rsp.data));
-		console.log(dom);
-		var mods = dom.find('.toplist');
-		var newsDom = mods[0] || $(); 
-		var replyDom = mods[1] || $();
-		var hotDom = mods[2] || $();
+	$x.ajax({
+		url: 'http://bbs.toplicai.cn/', 
+		success: function (rsp) {
+			dom = $($xu.getBody(rsp.data));
+			console.log(dom);
+			var mods = dom.find('.toplist');
+			var newsDom = mods[0] || $(); 
+			var replyDom = mods[1] || $();
+			var hotDom = mods[2] || $();
 
-		var news = parseList(newsDom);
-		var repies = parseList(replyDom);
-		var hots = parseList(hotDom);
+			var news = parseList(newsDom);
+			var repies = parseList(replyDom);
+			var hots = parseList(hotDom);
 
-		renderlist(news, $('#list-new'));
-		renderlist(repies, $('#list-reply'));
-		renderlist(hots, $('#list-hot'));
+			renderlist(news, $('#list-new'));
+			renderlist(repies, $('#list-reply'));
+			renderlist(hots, $('#list-hot'));
 
-		$('.item').tap(function () {
-			eval($(this).attr('ontap'));
-		});
+			$('.item').tap(function () {
+				eval($(this).attr('ontap'));
+			});
+			$x.endRefresh();
+		},
+		fail: function (error) {
+			$x.endRefresh();
+		}
 	});
 }
 
