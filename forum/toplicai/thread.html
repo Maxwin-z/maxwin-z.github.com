@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html manifest="manifests/thread.html.manifest">
+<html manifestaaa="manifests/thread.html.manifest">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no" />
@@ -31,7 +31,7 @@
 		
 	</ul>
 	<script type="text/template" id="tpl_list_item">
-		<li class="item cell hl" tid="<%= tid %>">
+		<li class="item cell hl" tid="<%= tid %>" ontap="javascript:opentid(<%= tid %>)">
 			<div class="cell-c">
 				<div class="title font-title">
 				 	<% if (top) {%>
@@ -100,93 +100,24 @@
 
 	var query = XUtils.parseQuery(window.location.href);
 	var url = 'http://bbs.toplicai.cn/thread.php?fid=' + query.fid;
+	var pagingNotificationName = 'x_paging_thread' + query.fid;
+    var listBuilder = ListBuilder({
+        url: url,
+        config: config,
+        tpl: tpl,
+        list: $('#list'),
+        pagingNotificationName: pagingNotificationName,
+        firstPageFn: function (dom) {
+        	$x.setTitle(dom.find('#breadcrumbs strong a').html());
+        },
+        afterRender: function (dom) {
+        	dom.tap(function () {
+				eval($(this).attr('ontap'));
+        	});
+        }
+    });
+    listBuilder.refresh();
 
-	var latestPage = 0;
-	var totalPage = 1;
-	var loading = {};
-	var footerLoading = createHorizentalLoading();
-	var fullpageLoading = createFullpageLoading();
-	$('body').append(fullpageLoading);
-	refresh();
-
-	// detect scroll
-	$(window).on('scroll', function () {
-		var bodyHeight = $(document.body).height();
-		height4loading = Math.max($(window).height(), 960);
-		if (latestPage > 0) {
-			height4loading = Math.max(bodyHeight / latestPage, height4loading);
-		}
-		var scrollTop = $(window).scrollTop();
-		var shouldload = $(window).scrollTop() + height4loading + $(window).height() > bodyHeight; 
-		if (shouldload) {
-			loadNext();
-		}
-	});
-
-	// functions
-	function refresh() {
-		latestPage = 0;
-		loadNext(true);
-	}
-
-	function loadNext(force) {
-		if (latestPage == totalPage && !force) return ;	// already load last page
-		loadPage(latestPage + 1, function (items, pageInfo) {
-			latestPage = Math.max(latestPage, pageInfo.currentPage);
-			totalPage = pageInfo.totalPage;
-			renderItems(items);
-			console.log(latestPage, totalPage);
-			if (latestPage < totalPage) {
-				footerLoading.insertAfter($('#list'));
-				footerLoading.find('.horizental-hint-hint')
-				.text('正在加载' + (latestPage + 1) + '/' + totalPage + ' ...');
-			} else {
-				footerLoading.remove();
-			}
-		});
-	}
-
-	function renderItems(items) {
-		var htmls = [];
-		items.forEach(function (item) {
-			htmls.push(tpl(item));
-		});
-		var dom = $(htmls.join(''));
-		dom.on('tap', function () {
-			var li = $(this);
-			$x.open({
-				'url': XUtils.setUrlWithQuery('x://xweb', {
-					'url': $xu.replacePath('read.html'),
-					'tid': li.attr('tid')
-				})
-			});
-		});
-		$('#list').append(dom);
-	}
-
-	function loadPage(page, callback) {
-		if (loading[page]) return ;
-		loading[page] = true;
-		$x.getJSON(url + '&page=' + page, function (rsp) {
-		// $.getJSON('http://' + window.location.hostname + ':8081/c_board.html', function (rsp) {
-			if (fullpageLoading) {
-				fullpageLoading.remove();
-				fullpageLoading = null;
-			}
-			loading[page] = false;
-			var html = rsp.data;
-			var body = XUtils.getBody(html);
-			var dom = $(body);
-			var items = parse(dom, config);
-			var pageInfo = getPageInfo(dom.find('.pages .pagesone'));
-			callback(items, pageInfo);
-		});
-	}
-
-	// test scroll
-	// $(document.body).on('touchmove', function (event) {
-	// 	console.log(event);
-	// });
 	</script>
 </body>
 

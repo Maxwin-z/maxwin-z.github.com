@@ -108,179 +108,22 @@
 
     var query = XUtils.parseQuery(window.location.href);
     var url = 'http://bbs.toplicai.cn/read.php?tid=' + query.tid;
-    // url = 'http://' + window.location.hostname + ':8081/c_thread.html';
-    // // $x.getJSON('http://bbs.toplicai.cn/thread.php?fid=' + query.fid, function (rsp) {
-    // $.getJSON('http://localhost:8081/c_board.html', function (rsp) {
-    // 	var html = rsp.data;
-    // 	// console.log(html);
-    // 	var body = getBody(html);
-    // 	var dom = $(body);
-    // 	var items = parse(dom, config);
-    // 	// console.log(items);
-    // 	var htmls = [];
-    // 	items.forEach(function (item) {
-    // 		htmls.push(tpl(item));
-    // 	});
-    // 	$('#list').append($(htmls.join('')));
 
-    // 	var pageInfo = getPageInfo(dom.find('.pages .pagesone'));
-
-    // });
-
-    var latestPage = 0;
-    var totalPage = 1;
-    var loading = {};
-    var footerLoading = createHorizentalLoading();
-    var fullpageLoading = createFullpageLoading();
-    var fullRetry = null;
-    $('body').append(fullpageLoading);
-
-    refresh();
-
-    $(window).on('scroll', function() {
-        var bodyHeight = $(document.body).height();
-        height4loading = Math.max($(window).height(), 960);
-        if (latestPage > 0) {
-            height4loading = Math.max(bodyHeight / latestPage, height4loading);
-        }
-        var scrollTop = $(window).scrollTop();
-        var shouldload = $(window).scrollTop() + height4loading + $(window).height() > bodyHeight;
-        if (shouldload) {
-            loadNext();
+    var pagingNotificationName = 'x_paging_read' + query.fid;
+    var listBuilder = ListBuilder({
+        url: url,
+        config: config,
+        tpl: tpl,
+        list: $('#list'),
+        pagingNotificationName: pagingNotificationName,
+        firstPageFn: function (dom) {
+            var title = dom.find('#subject_tpc').html();
+            $('#post-title').html(title);
+            $x.setTitle($xu.html2text($xu.trimTag(title)));
         }
     });
+    listBuilder.refresh();
 
-    function refresh() {
-        latestPage = 0;
-        loadNext(true);
-    }
-
-    function loadNext(force) {
-        if (latestPage == totalPage && !force) return; // already load last page
-        loadPage(latestPage + 1, renderPage);
-    }
-
-    function renderPage(items, pageInfo) {
-        totalPage = pageInfo.totalPage;
-        latestPage = Math.max(latestPage, pageInfo.currentPage);
-        for (var i = latestPage; i <= pageInfo.totalPage; ++i) {
-            createPageAnchor(i);
-        }
-
-        renderItems(items, pageInfo.currentPage);
-
-        if (latestPage < totalPage) {
-            footerLoading.insertAfter($('#list'));
-            footerLoading.find('.horizental-hint-hint')
-                .text('正在加载' + (latestPage + 1) + '/' + totalPage + ' ...');
-        } else {
-            footerLoading.remove();
-        }
-    }
-
-    function renderItems(items, page) {
-        var htmls = [];
-        items.forEach(function(item) {
-            htmls.push(tpl(item));
-        });
-        var dom = $(htmls.join(''));
-        dom.insertAfter($('#anchor_' + page));
-        // $('#list').append(dom);
-        dom.find('img').each(function(index, img) {
-            var img = $(img);
-            var src = img.attr('xsrc');
-            if (!src) return;
-            if (src.indexOf('http') === -1) {
-                src = 'http://bbs.toplicai.cn/' + src;
-            }
-            $x.download(src, function(rsp) {
-                if (rsp.code == 0) {
-                    var path = rsp.path;
-                    var url = path.replace(/^file:\/\//i, 'x://');
-                    img.attr('src', url);
-                }
-            });
-        });
-    }
-
-    function loadPage(page, callback) {
-        if (loading[page]) return;
-        loading[page] = true;
-        // if (page == 1) {
-        // 	url = 'http://localhost/';
-        // }
-        // url = 'http://10.128.36.61:8081/c_read.html#';
-        $x.ajax({
-            dataType: 'json',
-            url: url + '&page=' + page,
-            success: function(rsp) {
-                if (fullpageLoading) {
-                    fullpageLoading.remove();
-                    fullpageLoading = null;
-                }
-
-                loading[page] = false;
-                var html = rsp.data;
-                var body = $xu.getBody(html);
-                var dom = $(body);
-                var items = parse(dom, config);
-                console.log(items);
-                var pageInfo = getPageInfo(dom.find('.pages .pagesone'));
-                callback(items, pageInfo);
-
-                if (page == 1) {
-                    var title = dom.find('#subject_tpc').html();
-                    $('#post-title').html(title);
-                    $x.setTitle($xu.html2text(title));
-                }
-            },
-            fail: function(code, message) {
-                loading[page] = false;
-                if (page == 1) {
-                    showFullRetryPage();
-                } else {
-
-                }
-                console.log('error:', code, message);
-            }
-        });
-    }
-
-    function showFullRetryPage() {
-        if (!fullRetry) {
-            fullRetry = createFullpageRetry();
-            fullRetry.on('tap', function() {
-                refresh();
-                $('body').append(fullpageLoading);
-                fullRetry.remove();
-            });
-        }
-        fullpageLoading.remove();
-        $('body').append(fullRetry);
-    }
-
-    function createPageAnchor(page) {
-        var dom = $('#anchor_' + page);
-        if (dom.length > 0) return dom;
-
-        dom = $('<li id="anchor_' + page + '" class="page-anchor"></li>');
-        if (page <= 1) {
-            $('#list').append(dom);
-        } else {
-            var node = $('#anchor_' + (page - 1));
-            if (!node) {
-                node = createPageAnchor(page - 1);
-            }
-            dom.insertAfter(node);
-        }
-
-        return dom;
-    }
-
-    // test scroll
-    // $(document.body).on('touchmove', function (event) {
-    // 	console.log(event);
-    // });
     </script>
 </body>
 

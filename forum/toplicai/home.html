@@ -1,93 +1,117 @@
 <!DOCTYPE html>
-<html manifest="manifests/home.html.manifest">
+<html manifestaaa="manifests/home.html.manifest">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<meta name="viewport" content="initial-scale=0.5, maximum-scale=0.5, user-scalable=no" />
-		<title>Menu</title>
+		<title>Home</title>
 		<style type="text/css">
 	    body.xstyle {}
 	    </style>
 
 		<link rel="stylesheet" type="text/css" href="css/main.css" />
+		<script type="text/javascript" src="js/underscore.js"></script>
 		<script type="text/javascript" src="js/zepto.js"></script>
 		<script type="text/javascript" src="js/touch.js"></script>
 		<script type="text/javascript" src="js/XApi.js"></script>
 		<script type="text/javascript" src="js/common.js"></script>
 		<style type="text/css">
 		
-		/*html, body {
-			width: 100%;
-			height: 100%;
+		html, body {
 			padding: 0;
 			margin: 0;
-		}*/
-		body {
-			border: 1px solid green;
-			/*position: absolute;*/
+		}
+
+		.section-title {
+			padding: 10px 20px;
+			background-color: #f0f0f0;
 		}
 		</style>
 	</head>
 
 <body>
-	<h1><a href="javascript:window.location.reload()">Coming soon...</a></h1>
-	<div id="debug"></div>
+
+<ul>
+    <li>
+        <div class="section-title font-title">最新发表</div>
+        <ul id="list-new">
+        </ul>
+    </li>
+    <li>
+        <div class="section-title font-title">最新回复</div>
+        <ul id="list-reply">
+        </ul>
+    </li>
+    <li>
+        <div class="section-title font-title">精华</div>
+        <ul id="list-hot">
+        </ul>
+    </li>
+</ul>
+
+<script type="text/template" id="list-item-tpl">
+<li class="item cell hl" ontap="javascript:opentid(<%= tid %>)">
+	<div class="cell-c font-title">
+		<div class="title">
+			<%= title %>
+		</div>
+		<div class="time font-subtitle">
+			<%= time %>
+		</div>
+	</div>
+	<div class="cell-s"></div>
+</li>	
+</script>
 
 <script type="text/javascript">
-	// $('#btn-test').tap(function () {
-	// 	$x.open({
-	// 		'url': XUtils.setUrlWithQuery('x://xweb', {
-	// 			'url': 'http://' + window.location.host + '/test.html',
-	// 		})
-	// 	});
-	// });
+$x.setTitle('首页');
+var dom;
+refresh();
+var tpl = _.template($('#list-item-tpl').html().trim());
+function refresh() {
+	$.getJSON('http://192.168.3.230:8081/c_home.html', function (rsp) {
+		dom = $($xu.getBody(rsp.data));
+		console.log(dom);
+		var mods = dom.find('.toplist');
+		var newsDom = mods[0] || $(); 
+		var replyDom = mods[1] || $();
+		var hotDom = mods[2] || $();
+
+		var news = parseList(newsDom);
+		var repies = parseList(replyDom);
+		var hots = parseList(hotDom);
+
+		renderlist(news, $('#list-new'));
+		renderlist(repies, $('#list-reply'));
+		renderlist(hots, $('#list-hot'));
+
+		$('.item').tap(function () {
+			eval($(this).attr('ontap'));
+		});
+	});
+}
+
+function parseList(dom) {
+	var posts = [];
+	$(dom).find('li').each(function (index, el) {
+		el = $(el);
+		posts.push({
+			title: el.find('a').html().trim(),
+			time: el.find('span.fr').html(),
+			tid: el.find('a').attr('href').replace(/.*?=(\d+)$/, '$1')
+		});
+	});
+	return posts;
+}
+
+function renderlist(items, dom) {
+	var htmls = [];
+	items.forEach(function (item) {
+		htmls.push(tpl(item));
+	});
+	dom.html(htmls.join(''));
+}
+
 </script>
-	
-	<!-- <div class="horizental-loading">
-		<div class="horizental-loading-left"></div>
-			<div class="horizental-loading-img rotate-animation"></div>
-			<div class="horizental-loading-hint">正在加载...</div>
-		<div class="horizental-loading-right"></div>
-	</div> -->
-	<!-- div class="fullpage-hint">
-		<div class="hint-wrapper">
-			<div class="hint-img rotate-animation"></div>
-			<div class="hint-text">正在加载...</div>	
-		</div>
-	</div -->
-	<script type="text/javascript">
-	// setTimeout(function () {
-	// 		console.log($(window).height());
-	// 		$('#fixed-box').css({
-	// 			'position': 'fixed',
-	// 			'bottom': 'auto',
-	// 			'top': 1
-	// 		});
-	// 	}, 1);
-
-	// $(window).resize(function (event) {
-	// 	console.log(event);
-		
-	// })
-	// $('#debug').html(window.location.href);
-	// $x.download('http://localhost/test/72.key');
-	// $x.download({
-	// 	url: 'http://localhost/test/72.key',
-	// 	path: 'tmp',
-	// 	inCache: true
-	// });
-	// var dom = createFullpageLoading();
-	// var dom = createFullpageRetry();
-	// $('body').append(dom);
-
-	// $x.download('http://localhost/404.png', function (rsp) {
-	// 	if (rsp.code == 0) {
-	// 		var path = rsp.path;
-	// 		var url = path.replace(/^file:\/\//i, 'x://');
-	// 		var img = $('<img>').attr('src', url);
-	// 		$('#debug').append(img);
-	// 	}
-	// });
-	</script>
 </body>
 
 </html>

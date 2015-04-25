@@ -29,6 +29,7 @@
 			padding-left: 20px;
 			padding-top: 50px;
 			height: 70px;
+			line-height: 70px;
 			border-bottom: 1px solid #bbb;
 			background-color: #f8f8f8;
 		}
@@ -50,19 +51,27 @@
 			background-color: white;
 		}
 		#list .font-title {
-			line-height: 80px;
+			line-height: 100px;
 		}
 		</style>
 	</head>
 
 <body>
 	<div id="header">
-	版面列表
+			版面列表	
 	</div>
 	<!-- <h1><a href="javascript:window.location.reload()">Reload Menu Page</a></h1> -->
 	<div id="debug"></div>
 	<div id="wrapper">
 		<ul id="list">
+			<li class="board cell hl" id="cell-home">
+				<div class="cell-c font-title">
+					<div class="name">
+						首页	
+					</div>
+				</div>
+				<div class="cell-s"></div>
+			</li>
 		</ul>
 	</div>
 
@@ -128,6 +137,17 @@
 		render($('#list'), tpl, items);
 		setupHighlight();
 		new IScroll($('#wrapper').get(0));
+	});
+
+	$('#cell-home').tap(function () {
+		 $x.open({
+	        'url': XUtils.setUrlWithQuery('x://xweb', {
+	            // 'page': 'board',
+	            'url': $xu.replacePath('home.html'),
+	            'title': '首页'
+	        }),
+	        'root': true
+	    })
 	});
 
 	function render(dom, tpl, items) {

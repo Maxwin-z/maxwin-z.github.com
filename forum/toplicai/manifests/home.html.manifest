@@ -2,6 +2,7 @@ CACHE MANIFEST
 
 CACHE:
 #js
+http://maxwin.me/forum/toplicai/js/underscore.js
 http://maxwin.me/forum/toplicai/js/zepto.js
 http://maxwin.me/forum/toplicai/js/touch.js
 http://maxwin.me/forum/toplicai/js/XApi.js
@@ -15,7 +16,7 @@ http://maxwin.me/forum/toplicai/img/icon-loading.png
 
 #extra
 
-#version: 1428756317102
+#version: 1429975507454
 
 NETWORK:
 *
