@@ -147,4 +147,37 @@ function style2string (styles) {
 	return res.join('');
 }
 
+function createPagePlaceHolder(page) {
+	var tpl = [
+		'<div class="x-page-placeholder" id="x_page_placeholder_', page, '">',
+			'<div class="x-page-placeholder-page">',
+				page,
+			'</div>',
+			'<div class="x-page-placeholder-hint">',
+			'	点击加载',
+			'</div>',
+			'<div class="x-page-placeholder-loading hidden">',
+			'	<span class="loading-img rotate-animation"></span>',
+			'	<span>正在加载</span>',
+			'</div>',
+			'<div class="x-page-placeholder-try hidden">',
+			'	<span class="retry-img"></span>',
+			'	<span>点击重试</span>',
+			'</div>',
+		'</div>'].join('');
+	return $(tpl);
+}
+
+function opentid(tid, title) {
+    $x.open({
+        'url': XUtils.setUrlWithQuery('x://xweb', {
+            // 'page': 'board',
+            'url': $xu.replacePath('read.html'),
+            'tid': tid,
+            'name': title || '',
+            'title': title || '' 
+        }),
+        // 'root': true
+    })
+}
 

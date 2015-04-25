@@ -47,14 +47,54 @@ window.$x = {
 		$x.send_message('endRefresh');
 	},
 
+	onKeyboardHeightChange: function (height) {
+		// override 
+	},
+
 	setTitle: function (title) {
 		$x.send_message('setTitle', {
 			title: title
 		});
 	},
 
+	enableScroll: function (enable) {
+		$x.send_message('setScrollEnable', {
+			enable: enable
+		});
+	},
+
+	enableDragRefresh: function (enable) {
+		$x.send_message('setDragRefreshEnable', {
+			enable: enable
+		});
+	},
+
+	showRightMenu: function (paging) {
+		$x.send_message('showRightMenu', {
+			paging: paging
+		});
+	},
+
 	getConfig: function (callback) {
 		$x.send_message('getConfig', {}, callback);
+	},
+
+	getCookie: function (url, callback) {
+		$x.send_message('getCookie', {url: url}, callback);
+	},
+
+	/**
+	buttons = [
+		{title: '...', action: function () {...}}
+	] 
+	 */
+	setRightBarItems: function (buttons) {
+		$x.send_message('rightBarButtonItems', {
+			buttons: buttons
+		}, function (rsp) {
+			var index = rsp.index;
+			buttons[index].action && buttons[index].action();
+		});
 	},
 
 	/**
@@ -80,7 +120,7 @@ window.$x = {
 	},
 
 	/**
-	 * opts. = url, animated, title, root
+	 * opts. = url, animated, model, title, root
 	 *
 	 */	
 	open: function (opts) {
@@ -88,6 +128,10 @@ window.$x = {
 			opts.animated = true;
 		}
 		$x.send_message('openPageInCenter', opts);
+	},
+
+	dismiss: function () {
+		$x.send_message('dismiss');
 	},
 
 	/**
