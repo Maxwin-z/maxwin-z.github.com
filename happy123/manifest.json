@@ -15,8 +15,7 @@
         "https://123.sankuai.com/huiyi/*"
       ],
       "js": [
-        "common.js",
-        "index.js"
+        "prod.js"
       ],
       "css": ["index.css"]
     }
