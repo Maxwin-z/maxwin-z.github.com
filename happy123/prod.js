@@ -1,5 +1,5 @@
 const prev = 'https://maxwin-z.github.io/happy123/'
-;['common.js', 'index.js'].forEach(src => {
+;['common.js', 'index.js?1'].forEach(src => {
   const script = document.createElement('script')
   script.src = `${prev}${src}`
   console.log(`append ${src}`)
