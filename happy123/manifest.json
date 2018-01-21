@@ -1,0 +1,28 @@
+{
+  "manifest_version": 2,
+  "name": "Happy123",
+  "description": "fuck meeting room",
+  "version": "1.0",
+
+  "permissions": [
+    "https://123.sankuai.com/huiyi/*",
+    "tabs"
+  ],
+
+  "content_scripts": [
+    {
+      "matches": [
+        "https://123.sankuai.com/huiyi/*"
+      ],
+      "js": [
+        "common.js",
+        "index.js"
+      ],
+      "css": ["index.css"]
+    }
+  ],
+
+  "browser_action": {
+    "default_icon": "icon.png"
+  }
+}
