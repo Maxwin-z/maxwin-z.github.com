@@ -2,21 +2,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"><head>
 
 
-<meta http-equiv="Content-Type" content="text/html; charset=gb2312"><title>MMine-Maxwin@2007</title><!--
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"><title>MMine-Maxwin@2007</title><!--
 	PS: Make sure the charset of the code is the same to the file's. Such as gb2312, uft8...
 	
 	By Maxwin@2007
 	Blog:http://www.x2blog.cn/Maxwin/
 	
 	Bug?
-	MaxthonÏÂ»á¶ÔÒ»¸ö°´¼üÁ¬ĞøÏàÓ¦Á½´Î£¬µ¼ÖÂÎŞ·¨±ê¼Ç¡£È¥³ı´úÂëÖĞµÄFor MaxthonµÄ×¢ÊÍ²¿·Ö¼´¿É
-	Firefox, ²âÊÔÖĞFFÔËĞĞÍ¬ÑùµÄµİ¹éº¯Êı±ÈIEÒª¿ì£¬µ«ÊÇÔÚ±¾³ÌĞòÖĞFFÔËĞĞµÄÏàµ±Âı£¬Î´²éÃ÷Ô­Òò
+	Maxthonä¸‹ä¼šå¯¹ä¸€ä¸ªæŒ‰é”®è¿ç»­ç›¸åº”ä¸¤æ¬¡ï¼Œå¯¼è‡´æ— æ³•æ ‡è®°ã€‚å»é™¤ä»£ç ä¸­çš„For Maxthonçš„æ³¨é‡Šéƒ¨åˆ†å³å¯
+	Firefox, æµ‹è¯•ä¸­FFè¿è¡ŒåŒæ ·çš„é€’å½’å‡½æ•°æ¯”IEè¦å¿«ï¼Œä½†æ˜¯åœ¨æœ¬ç¨‹åºä¸­FFè¿è¡Œçš„ç›¸å½“æ…¢ï¼ŒæœªæŸ¥æ˜åŸå› 
 
-	//ĞŞÕı:
-		1¡¢Í£Ö¹ºó£¬¼ÆÊ±Æ÷Ò²Á¢¿ÌÍ£Ö¹
-		2¡¢Ê§°Üºó²»ÔÙ½øĞĞ¸¨Öú¿ªÆô£¬·ñÔò¿ÉÄÜ»áÔì³É¶à´ÎFail.
+	//ä¿®æ­£:
+		1ã€åœæ­¢åï¼Œè®¡æ—¶å™¨ä¹Ÿç«‹åˆ»åœæ­¢
+		2ã€å¤±è´¥åä¸å†è¿›è¡Œè¾…åŠ©å¼€å¯ï¼Œå¦åˆ™å¯èƒ½ä¼šé€ æˆå¤šæ¬¡Fail.
 		
-		utf8ÉÏ´«µ½°ÙºÏÉÏ±»ĞŞ¸ÄÎªgb2312,³öÏÖÂÒÂë£¬ÔİĞŞ¸ÄÎªgb2312±àÂë
+		utf8ä¸Šä¼ åˆ°ç™¾åˆä¸Šè¢«ä¿®æ”¹ä¸ºgb2312,å‡ºç°ä¹±ç ï¼Œæš‚ä¿®æ”¹ä¸ºgb2312ç¼–ç 
 -->
 
 
@@ -83,16 +83,16 @@ body {
 	color:#808080;
 }
 
-/*À×*/
+/*é›·*/
 .bb {
 	color:#000;
 }
-/*¿ªÆô´íÎó*/
+/*å¼€å¯é”™è¯¯*/
 .be {
 	color:#F00;
 }
 
-/*É¨À×¹¤¾ß*/
+/*æ‰«é›·å·¥å…·*/
 #cp {
 	border:1px solid #f00;
 	background:#00FF00;
@@ -145,18 +145,18 @@ function $(id) {
 }
 
 var MMine = function (){
-	this.start = false;			//ÓÎÏ·¿ª¹Ø
-	this.started = false;		//½öÓÃÓÚÊ×´Î°´¼ü¿ªÊ¼Ê±Éú³Émap
+	this.start = false;			//æ¸¸æˆå¼€å…³
+	this.started = false;		//ä»…ç”¨äºé¦–æ¬¡æŒ‰é”®å¼€å§‹æ—¶ç”Ÿæˆmap
 //	this.cp.i = this.cp.j = 0;
-//	this.open_key = 0;			//¿ªÆô¼ü´úÂë
-//	this.mark_key = 0;			//±ê¼Ç¼ü´úÂë
+//	this.open_key = 0;			//å¼€å¯é”®ä»£ç 
+//	this.mark_key = 0;			//æ ‡è®°é”®ä»£ç 
 }
 
 MMine.prototype.SP = function() {
-	if (this.start) {	//ÔËĞĞ×ªÍ£Ö¹
+	if (this.start) {	//è¿è¡Œè½¬åœæ­¢
 		this.start = false;
 		this.started = false;
-		$('start').value = '¿ªÊ¼(S)';
+		$('start').value = 'å¼€å§‹(S)';
 		$('h').disabled = false;
 		$('w').disabled = false;
 		$('m').disabled = false;
@@ -166,7 +166,7 @@ MMine.prototype.SP = function() {
 	}
 	else {
 		this.start = true;
-		$('start').value = 'Í£Ö¹(S)';
+		$('start').value = 'åœæ­¢(S)';
 		$('h').disabled = true;
 		$('w').disabled = true;
 		$('m').disabled = true;
@@ -182,7 +182,7 @@ MMine.prototype.SP = function() {
 		var w = $('w').value;
 		var m = $('m').value;
 		
-		//Çå³ı·Ç·¨Êı¾İ
+		//æ¸…é™¤éæ³•æ•°æ®
 		if (h < 9) h = 9;
 		if (w < 9) w = 9;
 		if (m < h*w/10) m = parseInt(h*w/10);
@@ -197,16 +197,16 @@ MMine.prototype.SP = function() {
 }
 
 MMine.prototype.init = function(row,col,nums) {
-	this.map = new Array();		//1=>ÓĞÀ×  0=>ÎŞÀ×
-	this.mine = new Array();	//n=>ÖÜÎ§ÓĞn¸öÀ×  (n=0, 1, ..., 8)
-	this.state = new Array();	//¸ÃµØ×´Ì¬£º0Î´¿ªÆô  1ÒÑ¿ªÆô  2ÒÑ±ê¼Ç  3ÒÑ¿ªÆô£¬µ«¿ÉÒÔÔÚÆäÉÏÊ¹ÓÃ¿ªÆô¼ü½øĞĞ¸¨Öú¿ªÆô£¨ÀàËÆÊó±êÉ¨À×µÄË«»÷¹¦ÄÜ£©
-	this.marked = new Array();	//n=>ÖÜÎ§ÒÑ¾­±»±ê¼Çn¸ö¡£ÓÃÓÚÅĞ¶Ï¸ÃµØÊÇ·ñ¿ÉÒÔ½øĞĞ¸¨Öú¿ªÆô
-	this.conf = new Object();	//ÅäÖÃ£¬ĞĞ ÁĞ À×Êı==
-	this.cp = new Object();		//µ±Ç°É¨À×Î»ÖÃ
-	this.mark_count = 0;		//ÒÑÕıÈ·±ê¼ÇÊıÄ¿£¬ÓÃÓÚÅĞ¶ÏSuccess
-	this.open_count = 0;		//ÒÑ¿ªÆôÊıÄ¿£¬ÓÃÓÚÅĞ¶ÏSuccess
-	this.idle = 0;	//for maxthon, maxthonÖĞÓĞÊ±°´ÏÂÒ»¸ö¼ü»áÓĞÁ½´ÎÏàÓ¦, bug or rpwt?¡£
-	this.time = 0;				//ÓÃÊ±
+	this.map = new Array();		//1=>æœ‰é›·  0=>æ— é›·
+	this.mine = new Array();	//n=>å‘¨å›´æœ‰nä¸ªé›·  (n=0, 1, ..., 8)
+	this.state = new Array();	//è¯¥åœ°çŠ¶æ€ï¼š0æœªå¼€å¯  1å·²å¼€å¯  2å·²æ ‡è®°  3å·²å¼€å¯ï¼Œä½†å¯ä»¥åœ¨å…¶ä¸Šä½¿ç”¨å¼€å¯é”®è¿›è¡Œè¾…åŠ©å¼€å¯ï¼ˆç±»ä¼¼é¼ æ ‡æ‰«é›·çš„åŒå‡»åŠŸèƒ½ï¼‰
+	this.marked = new Array();	//n=>å‘¨å›´å·²ç»è¢«æ ‡è®°nä¸ªã€‚ç”¨äºåˆ¤æ–­è¯¥åœ°æ˜¯å¦å¯ä»¥è¿›è¡Œè¾…åŠ©å¼€å¯
+	this.conf = new Object();	//é…ç½®ï¼Œè¡Œ åˆ— é›·æ•°==
+	this.cp = new Object();		//å½“å‰æ‰«é›·ä½ç½®
+	this.mark_count = 0;		//å·²æ­£ç¡®æ ‡è®°æ•°ç›®ï¼Œç”¨äºåˆ¤æ–­Success
+	this.open_count = 0;		//å·²å¼€å¯æ•°ç›®ï¼Œç”¨äºåˆ¤æ–­Success
+	this.idle = 0;	//for maxthon, maxthonä¸­æœ‰æ—¶æŒ‰ä¸‹ä¸€ä¸ªé”®ä¼šæœ‰ä¸¤æ¬¡ç›¸åº”, bug or rpwt?ã€‚
+	this.time = 0;				//ç”¨æ—¶
 
 	this.conf.row = row;
 	this.conf.col = col;
@@ -311,8 +311,8 @@ MMine.prototype.SetPos = function(i, j) {
 MMine.prototype.Open = function(i, j) {
 	if (this.start == false) return ;
 	if (this.state[i][j] != 0 && this.state[i][j] != 3) return;
-	if (this.map[i][j] == 0) {	//²»ÊÇÀ×
-		if (this.state[i][j] == 0) {//Î´¿ªÆôµÄ£¬¿ªÆôÖ®
+	if (this.map[i][j] == 0) {	//ä¸æ˜¯é›·
+		if (this.state[i][j] == 0) {//æœªå¼€å¯çš„ï¼Œå¼€å¯ä¹‹
 			var _div = $(i + '_' + j);
 			_div.className = 'mark b'+this.mine[i][j];
 			if (this.mine[i][j] > 0)
@@ -321,7 +321,7 @@ MMine.prototype.Open = function(i, j) {
 			if (this.open_count == this.conf.count) this.Success();
 		}
 		this.state[i][j] = 1;
-		if (this.mine[i][j] == this.marked[i][j])	{	//ÖÜÎ§À×ÒÑ¾­È«±ê¼Ç£¬Ôò¸¨Öú¿ªÆô
+		if (this.mine[i][j] == this.marked[i][j])	{	//å‘¨å›´é›·å·²ç»å…¨æ ‡è®°ï¼Œåˆ™è¾…åŠ©å¼€å¯
 			var _self = this;
 			this.each(function(x, y) {
 				if (_self.state[i+x][j+y] == 0 || _self.state[i+x][j+y] == 3) {
@@ -340,7 +340,7 @@ MMine.prototype.Mark = function() {
 	var _div = $(this.cp.i + '_' + this.cp.j);
 	var _self = this;
 	switch(this.state[this.cp.i][this.cp.j]) {
-	case 0:	//ÉĞÎ´¿ªÆô,Ôò±ê¼ÇÎª2
+	case 0:	//å°šæœªå¼€å¯,åˆ™æ ‡è®°ä¸º2
 		_div.innerHTML = '*';
 		this.each(function(x, y) {
 			_self.marked[_self.cp.i+x][_self.cp.j+y]++;
@@ -352,9 +352,9 @@ MMine.prototype.Mark = function() {
 		if (this.map[this.cp.i][this.cp.j] == 1) this.mark_count++;
 		if ($('mark').value == this.conf.nums && this.conf.nums == this.mark_count) this.Success();
 		break;
-	case 1:	//ÒÑ¾­¿ªÆô£¬Ôİ²»×ö»î¶¯
+	case 1:	//å·²ç»å¼€å¯ï¼Œæš‚ä¸åšæ´»åŠ¨
 		return ;
-	case 2:	//ÒÑ±ê¼Ç£¬ÔòÈ¥³ı±ê¼Ç
+	case 2:	//å·²æ ‡è®°ï¼Œåˆ™å»é™¤æ ‡è®°
 		_div.innerHTML = '';
 		this.each(function(x, y) {
 			_self.marked[_self.cp.i+x][_self.cp.j+y]--;
@@ -384,15 +384,15 @@ MMine.prototype.Fail = function () {
 					if (this.mine[i][j] > 0)
 						_div.innerHTML = this.mine[i][j];
 				}
-				else {	//±ê¼Ç´íÎó
+				else {	//æ ‡è®°é”™è¯¯
 					_div.className = 'mark be';
 					_div.innerHTML = '*';
 				}
 			}
-			if (this.map[i][j] == 1) {	//ÓĞÀ×
-				if (this.state[i][j] != 2) {	//ÎŞ±ê¼Ç£¬ÔòÏÔÊ¾
+			if (this.map[i][j] == 1) {	//æœ‰é›·
+				if (this.state[i][j] != 2) {	//æ— æ ‡è®°ï¼Œåˆ™æ˜¾ç¤º
 					_div.className = 'mark bb';
-					_div.innerHTML = '¡ñ';
+					_div.innerHTML = 'â—';
 				}
 			}
 		}
@@ -422,7 +422,7 @@ MMine.prototype.each = function(func) {
 		[1 , -1],
 		[1 ,  0],
 		[1 ,  1]
-		];	//8¸ö·½Ïò
+		];	//8ä¸ªæ–¹å‘
 	for (var i=0; i<8; i++) {
 		try {
 			func(arr[i][0], arr[i][1]);
@@ -434,27 +434,27 @@ var WebMine = new MMine();
 document.onkeydown = function (evt) {WebMine.KDown(evt);}
 </script></head><body onload="WebMine.SP()">
 <div id="timer">
-  <label for="mine">À×Êı£º</label>
+  <label for="mine">é›·æ•°ï¼š</label>
   <input name="mine" id="mine" readonly="readonly" type="text">
-  <label for="mark">±ê¼Ç£º</label>
+  <label for="mark">æ ‡è®°ï¼š</label>
   <input name="mark" id="mark" readonly="readonly" type="text">
-  <label for="time">ÓÃÊ±£º</label>
+  <label for="time">ç”¨æ—¶ï¼š</label>
   <input name="usedTime" id="usedTime" readonly="readonly" type="text">
 </div>
  <div style="width: 510px; height: 272px;" id="box"><div style="top: 119px; left: 238px;" id="cp" class="mark"></div></div>
 <fieldset id="setting">
-	<legend>¼üÅÌÉ¨À×ÉèÖÃ</legend>
+	<legend>é”®ç›˜æ‰«é›·è®¾ç½®</legend>
     <div id="setBox">
-	  <label for="h">¸ß¶È(H)</label>
+	  <label for="h">é«˜åº¦(H)</label>
   <input disabled="disabled" name="h" id="h" accesskey="H" value="16" type="text">
-	  <label for="w">¿í¶È(W)</label>
+	  <label for="w">å®½åº¦(W)</label>
   <input disabled="disabled" name="w" id="w" accesskey="W" value="30" type="text">
-	  <label for="m">À×Êı(M)</label>
+	  <label for="m">é›·æ•°(M)</label>
   <input disabled="disabled" name="m" id="m" accesskey="M" value="99" type="text">
-	  <input name="start" id="start" value="Í£Ö¹(S)" accesskey="S" onclick="WebMine.SP()" type="button">
+	  <input name="start" id="start" value="åœæ­¢(S)" accesskey="S" onclick="WebMine.SP()" type="button">
 </div>
 <div id="key">
-  <label for="openKey">É¨À×¼ü</label>
+  <label for="openKey">æ‰«é›·é”®</label>
   <select disabled="disabled" name="openKey" id="openKey" style="font-family: Verdana;">
 	<option value="65" selected="selected">A</option>
 	<option value="66">B</option>
@@ -483,7 +483,7 @@ document.onkeydown = function (evt) {WebMine.KDown(evt);}
 	<option value="89">Y</option>
 	<option value="90">Z</option>
   </select>
-  <label for="markKey">±ê¼Ç¼ü</label>
+  <label for="markKey">æ ‡è®°é”®</label>
   <select disabled="disabled" name="markKey" id="markKey" style="font-family: Verdana;">
 	<option value="65">A</option>
 	<option value="66">B</option>
@@ -512,6 +512,6 @@ document.onkeydown = function (evt) {WebMine.KDown(evt);}
 	<option value="89">Y</option>
 	<option value="90">Z</option>
   </select>
-·½Ïò¼üÒÆ¶¯</div>
+æ–¹å‘é”®ç§»åŠ¨</div>
 </fieldset>
 </body></html>
